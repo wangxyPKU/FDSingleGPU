@@ -1,0 +1,18 @@
+#
+#cd ${path}
+
+make -j
+
+cd /samples/bin/x86_64/linux/release
+ls
+./deviceQuery
+
+#run cuda progamm on compute node
+srun -N 1 -n 1 -p gpu --gres=gpu:1 ./deviceQuery
+#or 
+salloc -N 1 -n 1 -p gpu --gres=gpu:1 ./deviceQuery
+#or sbatch
+sbatch -N 1 -n -1 -p gpu --gres=gpu:1 ./exec.sh
+#exec.sh:
+srun -N 1 -n 1 -p gpu --gres=gpu:1 ./deviceQuery
+.......
