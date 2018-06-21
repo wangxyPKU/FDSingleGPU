@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 	struct timeval start_t,end_t;
 	double timeuse;
 
-        cout<<"\nInitializing data..."<<endl;
+    cout<<"\nInitializing data..."<<endl;
 	gettimeofday(&start_t, NULL);
 	//initialization and boundary condition
 	//fai_up=100, fai_right=fai_left=fai_down=0
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
 			fai[i] = 0;    
 	}
 
-	cout<<"Starting GPU calculation (include allocate memory)..."<<endl;
+	cout<<"Starting GPU calculation (include allocating GPU memory)..."<<endl;
 	StartTimer();
 
 	GetDeviceName();
