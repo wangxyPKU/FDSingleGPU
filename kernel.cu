@@ -36,6 +36,9 @@ __device__ float single_fai(float *fai, unsigned int i,unsigned int j,size_t pit
 __global__ void fai_iter(float *fai_n,float *fai,size_t pitch, int M, int N) {
 	//unsigned int i = blockDim.y*blockIdx.y + threadIdx.y;
 	//unsigned int j = blockDim.x*blockIdx.x + threadIdx.x;
+	int temp;
+    for (temp=0;temp<20;)
+        temp += 1;
 	for (int i = blockDim.y*blockIdx.y + threadIdx.y; i <M; i += blockDim.y*gridDim.y) {
 		float *fai_row_n = (float*)((char*)fai_n + i*pitch);
 		for (int j = blockDim.x*blockIdx.x + threadIdx.x; j < N; j += blockDim.x*gridDim.x) {
@@ -98,7 +101,7 @@ int main(int argc, char* argv[])
 	float *fai_dev, *fai_dev_n,*temp;
 	size_t pitch;
 
-	struct timeval start_t,end_t;
+	struct timeval start,start_t,end_t;
 	double timeuse;
 
     cout<<"\nInitializing data..."<<endl;
@@ -114,7 +117,7 @@ int main(int argc, char* argv[])
 	}
 
 	cout<<"Starting GPU calculation (include allocating GPU memory)..."<<endl;
-	StartTimer();
+	//StartTimer();
 
 	GetDeviceName();
 
@@ -130,7 +133,7 @@ int main(int argc, char* argv[])
 	const dim3 gridDim(8, 8,1);
 
 
-	for (n = 0; n < 5000; n++) {
+	for (n = 0; n < 1000; n++) {
 		fai_iter << <gridDim, blockDim >> > (fai_dev_n, fai_dev, pitch, M, N);
 		temp = fai_dev;
 		fai_dev = fai_dev_n;
