@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
 	float *fai_dev, *fai_dev_n,*temp;
 	size_t pitch;
 
-	struct timeval start,start_t,end_t;
+	struct timeval start_t,end_t;
 	double timeuse;
 
     cout<<"\nInitializing data..."<<endl;
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
 	const dim3 gridDim(8, 8,1);
 
 
-	for (n = 0; n < 1000; n++) {
+	for (n = 0; n < 5000; n++) {
 		fai_iter << <gridDim, blockDim >> > (fai_dev_n, fai_dev, pitch, M, N);
 		temp = fai_dev;
 		fai_dev = fai_dev_n;
