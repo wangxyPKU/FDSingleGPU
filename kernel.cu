@@ -31,6 +31,16 @@ __device__ float single_fai(float *fai, unsigned int i,unsigned int j,size_t pit
 	return ((a[j] + b[j] + c[j - 1] + c[j + 1]) / 4);
 }
 
+__device__ float WestTime(float *fai, unsigned int j)
+{
+    for(int k=0; k<100; k++){
+        fai[j] += 1;
+    }
+    for(int k=0; k<100; k++){
+        fai[j] = fai[j]-1;
+    }
+    return fai[j];
+}
 
 
 __global__ void fai_iter(float *fai_n,float *fai,size_t pitch, int M, int N) {
@@ -42,8 +52,10 @@ __global__ void fai_iter(float *fai_n,float *fai,size_t pitch, int M, int N) {
 	for (int i = blockDim.y*blockIdx.y + threadIdx.y; i <M; i += blockDim.y*gridDim.y) {
 		float *fai_row_n = (float*)((char*)fai_n + i*pitch);
 		for (int j = blockDim.x*blockIdx.x + threadIdx.x; j < N; j += blockDim.x*gridDim.x) {
-			if (i > 0 && i < M - 1 && j > 0 && j < N - 1)
+			if (i > 0 && i < M - 1 && j > 0 && j < N - 1){
 				fai_row_n[j] = single_fai(fai, i, j, pitch);
+				fai_row_n[j] = WestTime(fai_row_n, j);
+			}
 		}
 	}
 }
@@ -117,9 +129,9 @@ int main(int argc, char* argv[])
 	}
 
 	cout<<"Starting GPU calculation (include allocating GPU memory)..."<<endl;
-	//StartTimer();
+	StartTimer();
 
-	GetDeviceName();
+	//GetDeviceName();
 
 	CUDA_CALL(cudaMallocPitch((void**)&fai_dev, &pitch, N * sizeof(float), M));
 	CUDA_CALL(cudaMallocPitch((void**)&fai_dev_n, &pitch, N * sizeof(float), M));
