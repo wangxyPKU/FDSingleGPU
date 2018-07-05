@@ -33,10 +33,10 @@ __device__ float single_fai(float *fai, unsigned int i,unsigned int j,size_t pit
 
 __device__ float WestTime(float *fai, unsigned int j)
 {
-    for(int k=0; k<100; k++){
+    for(int k=0; k<1000; k++){
         fai[j] += 1;
     }
-    for(int k=0; k<100; k++){
+    for(int k=0; k<1000; k++){
         fai[j] = fai[j]-1;
     }
     return fai[j];
